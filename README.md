@@ -1,4 +1,4 @@
-# library Sample App
+# Library Sample App
 
 This application provide 5 REST API that satisfies the following requirements:
 
