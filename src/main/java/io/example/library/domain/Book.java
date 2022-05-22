@@ -15,7 +15,8 @@ public class Book implements Serializable {
     @NonNull
     String name;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id Integer id;
+    @Id
+    Integer id;
     @NonNull
     @ManyToOne
     BookAuthor bookAuthor;

@@ -14,7 +14,8 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Membership implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id Integer id;
+    @Id
+    Integer id;
     @OneToOne
     User user;
     @NonNull

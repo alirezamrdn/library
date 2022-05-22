@@ -1,5 +1,6 @@
 package io.example.library.service;
 
+import io.example.library.service.dto.BookDTO;
 import io.example.library.service.dto.UserDTO;
 import org.springframework.data.domain.Range;
 
@@ -11,6 +12,4 @@ public interface UserService {
     List<UserDTO> findAtLeastOneBookBorrowers();
     List<UserDTO> findAllBorrowNothingMembers();
     List<UserDTO> findBorrowers(Instant fromDate);
-    List<UserDTO> findBorrowers(UserDTO user, Range<Instant> dateRange);
-    List<UserDTO> findAllNotBorrowedBooks();
 }

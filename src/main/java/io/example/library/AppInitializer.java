@@ -2,12 +2,12 @@ package io.example.library;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import io.example.library.service.BookService;
 import io.example.library.service.UserService;
 import io.example.library.service.dto.BookDTO;
 import io.example.library.service.dto.BorrowDTO;
 import io.example.library.service.dto.GenderDTO;
 import io.example.library.service.dto.UserDTO;
-import io.example.library.service.BookService;
 import io.example.library.web.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -21,16 +21,14 @@ import java.util.*;
 
 @Component
 public class AppInitializer {
+    private final Set<BookDTO> bookDTOs = new HashSet<>();
     @Autowired
     private UserService userService;
-
     @Autowired
     private BookService bookService;
 
-    private final Set<BookDTO> bookDTOs = new HashSet<>();
-
     @EventListener(ApplicationReadyEvent.class)
-    public void loadDataFromCsv() throws IOException, CsvValidationException, ParseException {
+    public List<UserDTO> loadDataFromCsv() throws IOException, CsvValidationException, ParseException {
         CSVReader csvReader = new CSVReader(new FileReader(Objects.requireNonNull(this.getClass().getResource("/user.csv")).getFile()));
         csvReader.skip(1);
         String[] csvCell;
@@ -55,9 +53,10 @@ public class AppInitializer {
         bookService.save(new ArrayList<>(bookDTOs));
         fillBorrowDTOs(userDTOList);
         userService.save(userDTOList);
+        return userDTOList;
     }
 
-    public void fillBorrowDTOs(List<UserDTO> userDTOList) throws IOException, CsvValidationException, ParseException {
+    private void fillBorrowDTOs(List<UserDTO> userDTOList) throws IOException, CsvValidationException, ParseException {
         String[] csvCell;
         CSVReader csvReader = new CSVReader(new FileReader(Objects.requireNonNull(this.getClass().getResource("/borrowed.csv")).getFile()));
         csvReader.skip(1);
@@ -79,7 +78,7 @@ public class AppInitializer {
         }
     }
 
-    public void fillBookDTOs() throws IOException, CsvValidationException {
+    private void fillBookDTOs() throws IOException, CsvValidationException {
         CSVReader csvReader = new CSVReader(new FileReader(Objects.requireNonNull(this.getClass().getResource("/books.csv")).getFile()));
         csvReader.skip(1);
         String[] csvCell;
@@ -90,7 +89,7 @@ public class AppInitializer {
             String publisher = csvCell[3];
             if (!(title.isEmpty() && author.isEmpty() && genre.isEmpty() && publisher.isEmpty()) &&
                     bookDTOs.stream().noneMatch(b -> b.getName().equals(title) && b.getBookAuthor().equals(author)
-                    && b.getBookGenre().equals(genre) && b.getBookPublisher().equals(publisher))) {
+                            && b.getBookGenre().equals(genre) && b.getBookPublisher().equals(publisher))) {
                 BookDTO bookDTO = BookDTO.builder()
                         .name(title)
                         .bookAuthor(author)

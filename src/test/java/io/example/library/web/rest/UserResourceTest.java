@@ -14,31 +14,38 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs
-@WebMvcTest(UserResource.class)
+@WebMvcTest(BorrowResource.class)
 public class UserResourceTest {
-    private AppInitializer appInitializer;
     @MockBean
     UserService userService;
 
+    @MockBean
+    AppInitializer appInitializer;
     @Autowired
     MockMvc mockMvc;
-
-    @Autowired
-    ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() {
     }
 
     @Test
-    public void findAtLeastOneBookBorrowers() throws Exception{
-        mockMvc.perform(get(UrlConstants.GLOBAL_URL + UrlConstants.AT_LEAST_ONE_BOOK_BORROWERS))
-                .andExpect(status().isOk()).andDo(
-                        r -> System.out.println(r.getResponse().getContentAsString()));
+    public void testServices() throws Exception {
+        appInitializer.loadDataFromCsv();
+        given(appInitializer).will(a -> {
+            mockMvc.perform(get(UrlConstants.GLOBAL_BORROW_URL + UrlConstants.BORROWER__AT_LEAST_ONE_BOOK_BORROWERS))
+                    .andExpect(status().isOk()).andDo(
+                            r -> System.out.println(r.getResponse().getContentAsString()));
+            mockMvc.perform(get(UrlConstants.GLOBAL_BORROW_URL + UrlConstants.BORROWER__NON_TERMINATED_USERS_WITHOUT_BORROWING))
+                    .andExpect(status().isOk()).andDo(
+                            r -> System.out.println(r.getResponse().getContentAsString()));
+            return null;
+        });
+
     }
 }

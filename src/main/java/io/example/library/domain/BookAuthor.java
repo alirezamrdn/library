@@ -1,6 +1,9 @@
 package io.example.library.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,5 +17,6 @@ import java.io.Serializable;
 public class BookAuthor implements Serializable {
     String name;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id Integer id;
+    @Id
+    Integer id;
 }

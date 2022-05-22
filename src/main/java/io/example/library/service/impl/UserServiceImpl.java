@@ -1,16 +1,21 @@
 package io.example.library.service.impl;
 
-import io.example.library.domain.*;
-import io.example.library.repository.*;
+import io.example.library.domain.Borrow;
+import io.example.library.domain.User;
+import io.example.library.repository.UserRepository;
 import io.example.library.service.UserService;
+import io.example.library.service.dto.BookDTO;
 import io.example.library.service.dto.UserDTO;
 import io.example.library.service.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Range;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -35,26 +40,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAtLeastOneBookBorrowers() {
-        return userMapper.toDto(userRepository.findAll());
+        return userMapper.toDto(userRepository.findAtLeastOneBookBorrowers());
     }
 
     @Override
     public List<UserDTO> findAllBorrowNothingMembers() {
-        return null;
+        return userMapper.toDto(userRepository.findAllBorrowNothingMembers());
     }
 
     @Override
     public List<UserDTO> findBorrowers(Instant fromDate) {
-        return null;
-    }
-
-    @Override
-    public List<UserDTO> findBorrowers(UserDTO user, Range<Instant> dateRange) {
-        return null;
-    }
-
-    @Override
-    public List<UserDTO> findAllNotBorrowedBooks() {
-        return null;
+        return userMapper.toDto(userRepository.findBorrowsByDate(fromDate));
     }
 }

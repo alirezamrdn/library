@@ -8,14 +8,17 @@ import io.example.library.repository.BookAuthorRepository;
 import io.example.library.repository.BookGenreRepository;
 import io.example.library.repository.BookPublisherRepository;
 import io.example.library.repository.BookRepository;
-import io.example.library.service.dto.BookDTO;
-import io.example.library.service.mapper.BookMapper;
 import io.example.library.service.BookService;
+import io.example.library.service.dto.BookDTO;
+import io.example.library.service.dto.UserDTO;
+import io.example.library.service.mapper.BookMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Range;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,7 @@ public class BookServiceImpl implements BookService {
     private final BookGenreRepository bookGenreRepository;
     private final BookPublisherRepository bookPublisherRepository;
     private final BookMapper bookMapper;
+
     @Override
     public void save(List<BookDTO> bookDTOs) {
         List<Book> bookList = bookMapper.toEntity(bookDTOs);
@@ -66,5 +70,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Optional<BookDTO> find(BookDTO bookDTO) {
         return Optional.of(bookMapper.toDto(bookRepository.findOne(Example.of(bookMapper.toEntity(bookDTO))).orElse(null)));
+    }
+
+    @Override
+    public List<BookDTO> findBooks(UserDTO user, Range<Instant> dateRange) {
+        return bookMapper.toDto(bookRepository.findAllBorrowedBooks(user.getFirstName(), user.getLastName(), dateRange.getLowerBound().getValue().get(), dateRange.getUpperBound().getValue().get()));
+    }
+
+    @Override
+    public List<BookDTO> findAllNotBorrowedBooks() {
+        return bookMapper.toDto(bookRepository.findAllNotBorrowed());
     }
 }

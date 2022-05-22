@@ -14,12 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id Integer id;
-    @NonNull
+    @Id
+    Integer id;
     String firstName;
-    @NonNull
     String lastName;
-    @NonNull
     Gender gender;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     Membership membership;

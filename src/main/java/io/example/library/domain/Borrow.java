@@ -14,14 +14,13 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Borrow implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id Integer id;
+    @Id
+    Integer id;
     @ManyToOne
-    @JoinColumn(name="borrower_id")
+    @JoinColumn(name = "borrower_id")
     User borrower;
-    @NonNull
     @ManyToOne
     Book book;
-    @NonNull
     @Column(name = "borrow_from")
     Instant from;
     @Column(name = "borrow_to")

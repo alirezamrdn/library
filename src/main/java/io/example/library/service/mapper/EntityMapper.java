@@ -3,16 +3,15 @@ package io.example.library.service.mapper;
 import java.util.List;
 
 /**
- * @author <a href="mailto:alirezamardani@gmail.com">Alireza Mardani</a>
- * @version 0.0.1
- *
- * Contract for a generic dto to entity mapper.
- *
  * @param <D> - DTO type parameter.
  * @param <E> - Entity type parameter.
+ * @author <a href="mailto:alirezamardani@gmail.com">Alireza Mardani</a>
+ * @version 0.0.1
+ * <p>
+ * Contract for a generic dto to entity mapper.
  */
 
-public interface EntityMapper <D, E> {
+public interface EntityMapper<D, E> {
 
     E toEntity(D dto);
 
@@ -20,5 +19,5 @@ public interface EntityMapper <D, E> {
 
     List<E> toEntity(List<D> dtoList);
 
-    List <D> toDto(List<E> entityList);
+    List<D> toDto(List<E> entityList);
 }
