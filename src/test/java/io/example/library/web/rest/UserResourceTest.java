@@ -1,6 +1,5 @@
 package io.example.library.web.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.example.library.AppInitializer;
 import io.example.library.service.UserService;
 import io.example.library.web.util.UrlConstants;

@@ -10,7 +10,10 @@ import java.util.Optional;
 
 public interface BookService {
     void save(List<BookDTO> bookDTOs);
+
     Optional<BookDTO> find(BookDTO bookDTO);
+
     List<BookDTO> findBooks(UserDTO user, Range<Instant> dateRange);
+
     List<BookDTO> findAllNotBorrowedBooks();
 }

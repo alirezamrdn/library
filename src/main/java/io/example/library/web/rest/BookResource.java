@@ -32,7 +32,7 @@ public class BookResource {
                                         @RequestParam("lastName") String lastName) throws URISyntaxException {
         log.debug("REST request to get findByUserDate");
         return BookService.findBooks(UserDTO.builder().firstName(firstName).lastName(lastName).build(),
-                Range.open(fromDate.toInstant(),toDate.toInstant()));
+                Range.open(fromDate.toInstant(), toDate.toInstant()));
     }
 
     @GetMapping(BOOK__NOT_BORROWED)
